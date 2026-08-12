@@ -22,8 +22,8 @@ PopupWindow {
 
     readonly property bool shown: Popups.isOpen(popupId)
     readonly property alias hovered: hoverHandler.hovered
-    // cardWidth задаётся «при масштабе 100 %», реальная ширина тянется за кеглем
-    readonly property int scaledWidth: Math.round(cardWidth * Appearance.popupScale)
+    // cardWidth задаётся «при масштабе 100 %», реальная ширина тянется за Settings.scale
+    readonly property int scaledWidth: Math.round(cardWidth * Appearance.scale)
     readonly property int cardHeight: column.implicitHeight + cardPadding * 2
 
     default property alias cardData: column.data
@@ -51,8 +51,8 @@ PopupWindow {
     }
 
     // ─── Обход залипания кадра при изменении размера ────────────────────────
-    // Если открытое окно попапа меняет размер (сменился кегль, подгрузился
-    // список), на некоторых композиторах его поверхность перестаёт получать
+    // Если открытое окно попапа меняет размер (подгрузился список, изменилось
+    // содержимое), на некоторых композиторах его поверхность перестаёт получать
     // новые кадры и содержимое остаётся нарисованным по-старому. Лечится
     // пересозданием поверхности: прячем окно на пару кадров и показываем снова.
     // Отключается через Settings.popupRemapOnResize.

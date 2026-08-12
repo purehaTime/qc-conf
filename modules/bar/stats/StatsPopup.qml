@@ -89,7 +89,7 @@ DockPopup {
     ColumnLayout {
         Layout.fillWidth: true
         // фиксируем высоту, чтобы окно не «прыгало» при первом обновлении списка
-        Layout.minimumHeight: 6 * 17
+        Layout.minimumHeight: 6 * Appearance.px(17)
         spacing: 1
 
         Repeater {
@@ -117,7 +117,7 @@ DockPopup {
                 }
 
                 StyledText {
-                    Layout.preferredWidth: 42
+                    Layout.preferredWidth: Appearance.px(42)
                     horizontalAlignment: Text.AlignRight
                     text: `${modelData.mem.toFixed(1)}%`
                     color: Theme.overlay2

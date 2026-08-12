@@ -9,8 +9,8 @@ Item {
 
     signal toggled
 
-    implicitWidth: 38
-    implicitHeight: 21
+    implicitWidth: Appearance.px(38)
+    implicitHeight: Appearance.px(21)
 
     Rectangle {
         id: bg
@@ -30,11 +30,11 @@ Item {
     Rectangle {
         id: knob
 
-        width: parent.height - 6
+        width: parent.height - Appearance.px(6)
         height: width
         radius: width / 2
         anchors.verticalCenter: parent.verticalCenter
-        x: root.checked ? parent.width - width - 3 : 3
+        x: root.checked ? parent.width - width - Appearance.px(3) : Appearance.px(3)
         color: root.checked ? (Theme.isDark ? Theme.crust : Theme.base) : Theme.overlay1
         scale: mouse.pressed ? 0.88 : 1
 

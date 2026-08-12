@@ -66,8 +66,8 @@ DockPopup {
         }
 
         BarButton {
-            implicitWidth: 28
-            implicitHeight: 28
+            implicitWidth: Appearance.px(28)
+            implicitHeight: Appearance.px(28)
             radius: Appearance.radius.full
             onClicked: root.shift(-1)
 
@@ -80,8 +80,8 @@ DockPopup {
         }
 
         BarButton {
-            implicitWidth: 28
-            implicitHeight: 28
+            implicitWidth: Appearance.px(28)
+            implicitHeight: Appearance.px(28)
             radius: Appearance.radius.full
             onClicked: {
                 root.viewMonth = root.now.getMonth();
@@ -97,8 +97,8 @@ DockPopup {
         }
 
         BarButton {
-            implicitWidth: 28
-            implicitHeight: 28
+            implicitWidth: Appearance.px(28)
+            implicitHeight: Appearance.px(28)
             radius: Appearance.radius.full
             onClicked: root.shift(1)
 
@@ -144,13 +144,13 @@ DockPopup {
             readonly property bool isToday: model.today
             readonly property bool inMonth: model.month === grid.month
 
-            implicitWidth: 34
-            implicitHeight: 30
+            implicitWidth: Appearance.px(34)
+            implicitHeight: Appearance.px(30)
 
             Rectangle {
                 anchors.centerIn: parent
-                width: 28
-                height: 28
+                width: Appearance.px(28)
+                height: Appearance.px(28)
                 radius: Appearance.radius.small
                 color: parent.isToday ? Theme.accent : "transparent"
                 opacity: parent.isToday ? 1 : 0

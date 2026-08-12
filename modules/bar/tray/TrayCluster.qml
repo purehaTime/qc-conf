@@ -9,7 +9,7 @@ Rectangle {
     id: root
 
     implicitWidth: row.implicitWidth + Appearance.padding.small * 2
-    implicitHeight: Appearance.bar.itemHeight + 4
+    implicitHeight: Appearance.bar.itemHeight + Appearance.px(4)
     radius: Appearance.radius.large
     color: Theme.trayBg
 
@@ -39,7 +39,7 @@ Rectangle {
 
         Rectangle {
             Layout.preferredWidth: 1
-            Layout.preferredHeight: 16
+            Layout.preferredHeight: Appearance.px(16)
             Layout.leftMargin: Appearance.spacing.small
             Layout.rightMargin: Appearance.spacing.small
             color: Theme.separator

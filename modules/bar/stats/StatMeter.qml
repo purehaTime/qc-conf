@@ -50,9 +50,9 @@ Item {
         }
 
         Rectangle {
-            width: Math.max(row.implicitWidth, 42)
-            height: 3
-            radius: 2
+            width: Math.max(row.implicitWidth, Appearance.px(42))
+            height: Appearance.px(3)
+            radius: height / 2
             color: Theme.trackBg
 
             Rectangle {

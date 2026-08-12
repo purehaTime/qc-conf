@@ -100,9 +100,9 @@ Item {
 
         Rectangle {
             visible: root.indicator
-            width: 5
-            height: 5
-            radius: 3
+            width: Appearance.px(5)
+            height: Appearance.px(5)
+            radius: width / 2
             color: root.indicatorColor
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom

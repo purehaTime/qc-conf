@@ -55,8 +55,8 @@ TrayItem {
         }
 
         BarButton {
-            implicitWidth: 26
-            implicitHeight: 26
+            implicitWidth: Appearance.px(26)
+            implicitHeight: Appearance.px(26)
             radius: Appearance.radius.full
             visible: NetworkService.wifiEnabled
             onClicked: NetworkService.rescan()
@@ -132,7 +132,7 @@ TrayItem {
 
     BarButton {
         Layout.fillWidth: true
-        implicitHeight: 30
+        implicitHeight: Appearance.px(30)
         radius: Appearance.radius.normal
         baseColor: Theme.alpha(Theme.surface0, 0.5)
         onClicked: NetworkService.openSettings()

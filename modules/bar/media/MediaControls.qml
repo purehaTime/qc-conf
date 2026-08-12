@@ -49,8 +49,8 @@ RowLayout {
                 spacing: Appearance.spacing.normal
 
                 ClippingRectangle {
-                    Layout.preferredWidth: 22
-                    Layout.preferredHeight: 22
+                    Layout.preferredWidth: Appearance.px(22)
+                    Layout.preferredHeight: Appearance.px(22)
                     radius: Appearance.radius.small
                     color: Theme.alpha(Theme.pink, 0.18)
 
@@ -104,7 +104,7 @@ RowLayout {
 
     // ─── Кнопки ─────────────────────────────────────────────────────────────
     BarButton {
-        implicitWidth: 28
+        implicitWidth: Appearance.px(28)
         enabled: root.has
         onClicked: MediaService.previous()
 
@@ -118,7 +118,7 @@ RowLayout {
     }
 
     BarButton {
-        implicitWidth: 30
+        implicitWidth: Appearance.px(30)
         enabled: root.has
         activeColor: Theme.alpha(Theme.green, 0.18)
         active: MediaService.playing
@@ -134,7 +134,7 @@ RowLayout {
     }
 
     BarButton {
-        implicitWidth: 28
+        implicitWidth: Appearance.px(28)
         enabled: root.has
         onClicked: MediaService.next()
 
@@ -148,7 +148,7 @@ RowLayout {
     }
 
     BarButton {
-        implicitWidth: 28
+        implicitWidth: Appearance.px(28)
         onClicked: MediaService.toggleMute()
 
         MaterialIcon {

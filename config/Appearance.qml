@@ -4,49 +4,22 @@ pragma Singleton
 // Размеры, шрифты, скругления, анимации. Всё «мягкое»: крупные радиусы,
 // умеренные тени, короткие плавные переходы.
 //
-// Все кегли и высоты проходят через fontScale — его можно менять на лету
-// в док-окне темы; значение сохраняется между запусками.
+// Все размеры проходят через px() — общий масштаб панели задаётся одной
+// константой Settings.scale (см. config/Settings.qml).
 //
 
 import Quickshell
-import Quickshell.Io
 import QtQuick
 
 Singleton {
     id: root
 
-    // ─── Масштаб шрифта ─────────────────────────────────────────────────────
-    property real fontScale: 1.0
+    // Общий масштаб панели: 1.0 — базовый
+    readonly property real scale: Settings.scale
 
-    readonly property real minFontScale: 0.75
-    readonly property real maxFontScale: 1.6
-    readonly property real fontScaleStep: 0.05
-
-    // Попапы растут медленнее текста, иначе на крупном кегле они огромные
-    readonly property real popupScale: 1 + (fontScale - 1) * 0.7
-
-    // производные readonly-значения для UI
-    readonly property int fontScalePercent: Math.round(fontScale * 100)
-    readonly property real fontScaleNormalized: (fontScale - minFontScale) / (maxFontScale - minFontScale)
-
-    function scaled(value: real): int {
-        return Math.max(1, Math.round(value * root.fontScale));
-    }
-
-    function setFontScale(value: real): void {
-        const snapped = Math.round(value / fontScaleStep) * fontScaleStep;
-        const clamped = Math.max(minFontScale, Math.min(maxFontScale, snapped));
-        root.fontScale = clamped;
-        persist.fontScale = clamped;
-        stateFile.writeAdapter();
-    }
-
-    function changeFontScale(delta: real): void {
-        setFontScale(root.fontScale + delta);
-    }
-
-    function resetFontScale(): void {
-        setFontScale(1.0);
+    // Размер в пикселях с учётом масштаба
+    function px(value: real): int {
+        return Math.max(1, Math.round(value * root.scale));
     }
 
     // ─── Шрифты ─────────────────────────────────────────────────────────────
@@ -56,54 +29,53 @@ Singleton {
         readonly property string icons: "Material Symbols Rounded"
 
         readonly property QtObject size: QtObject {
-            readonly property int tiny: root.scaled(10)
-            readonly property int small: root.scaled(11)
-            readonly property int normal: root.scaled(12)
-            readonly property int medium: root.scaled(13)
-            readonly property int large: root.scaled(15)
-            readonly property int huge: root.scaled(18)
+            readonly property int tiny: root.px(10)
+            readonly property int small: root.px(11)
+            readonly property int normal: root.px(12)
+            readonly property int medium: root.px(13)
+            readonly property int large: root.px(15)
+            readonly property int huge: root.px(18)
         }
 
         readonly property QtObject icon: QtObject {
-            readonly property int small: root.scaled(14)
-            readonly property int normal: root.scaled(17)
-            readonly property int large: root.scaled(20)
-            readonly property int huge: root.scaled(26)
+            readonly property int small: root.px(14)
+            readonly property int normal: root.px(17)
+            readonly property int large: root.px(20)
+            readonly property int huge: root.px(26)
         }
     }
 
     readonly property QtObject radius: QtObject {
-        readonly property int small: 8
-        readonly property int normal: 12
-        readonly property int large: 16
-        readonly property int huge: 22
+        readonly property int small: root.px(8)
+        readonly property int normal: root.px(12)
+        readonly property int large: root.px(16)
+        readonly property int huge: root.px(22)
         readonly property int full: 999
     }
 
     readonly property QtObject spacing: QtObject {
-        readonly property int tiny: 2
-        readonly property int small: 4
-        readonly property int normal: 8
-        readonly property int medium: 12
-        readonly property int large: 16
-        readonly property int huge: 24
+        readonly property int tiny: root.px(2)
+        readonly property int small: root.px(4)
+        readonly property int normal: root.px(8)
+        readonly property int medium: root.px(12)
+        readonly property int large: root.px(16)
+        readonly property int huge: root.px(24)
     }
 
     readonly property QtObject padding: QtObject {
-        readonly property int tiny: 2
-        readonly property int small: 6
-        readonly property int normal: 10
-        readonly property int medium: 14
-        readonly property int large: 18
+        readonly property int tiny: root.px(2)
+        readonly property int small: root.px(6)
+        readonly property int normal: root.px(10)
+        readonly property int medium: root.px(14)
+        readonly property int large: root.px(18)
     }
 
     readonly property QtObject bar: QtObject {
-        // Высота панели тянется за кеглем, но мягче: 1.0 → 38, 1.3 → 43
-        readonly property int height: Math.round(20 + 18 * root.fontScale)
-        readonly property int itemHeight: Math.round(12 + 16 * root.fontScale)
-        readonly property int itemWidth: root.scaled(32)
-        readonly property int sideMargin: 8
-        readonly property int popupGap: 8
+        readonly property int height: root.px(38)
+        readonly property int itemHeight: root.px(28)
+        readonly property int itemWidth: root.px(32)
+        readonly property int sideMargin: root.px(8)
+        readonly property int popupGap: root.px(8)
     }
 
     readonly property QtObject anim: QtObject {
@@ -112,30 +84,5 @@ Singleton {
         readonly property int slow: 300
         readonly property int curve: Easing.OutQuint
         readonly property int curveEmphasized: Easing.OutBack
-    }
-
-    // ─── Сохранение масштаба между запусками ────────────────────────────────
-    property bool _restored: false
-
-    FileView {
-        id: stateFile
-
-        // Без watchChanges: файл пишем только мы, а перечитывание гонялось бы
-        // с записью и откатывало только что выбранное значение.
-        path: Quickshell.statePath("appearance.json")
-        onLoadFailed: writeAdapter()
-        onLoaded: {
-            if (root._restored)
-                return;
-            root._restored = true;
-            if (persist.fontScale > 0)
-                root.fontScale = Math.max(root.minFontScale, Math.min(root.maxFontScale, persist.fontScale));
-        }
-
-        JsonAdapter {
-            id: persist
-
-            property real fontScale: 1.0
-        }
     }
 }

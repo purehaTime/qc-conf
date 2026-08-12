@@ -9,14 +9,14 @@ Item {
 
     property real value: 0
     property color accent: Theme.accent
-    property int barHeight: 8
+    property int barHeight: Appearance.px(8)
     property bool interactive: true
 
     signal moved(real value)
     signal released(real value)
 
-    implicitWidth: 160
-    implicitHeight: 20
+    implicitWidth: Appearance.px(160)
+    implicitHeight: Appearance.px(20)
 
     function _valueAt(x: real): real {
         return Math.max(0, Math.min(1, x / Math.max(1, track.width)));
@@ -52,11 +52,11 @@ Item {
     Rectangle {
         id: handle
 
-        width: mouse.pressed ? 16 : (mouse.containsMouse ? 15 : 13)
+        width: mouse.pressed ? Appearance.px(16) : (mouse.containsMouse ? Appearance.px(15) : Appearance.px(13))
         height: width
         radius: width / 2
         color: Theme.isDark ? Theme.text : Theme.base
-        border.width: 2
+        border.width: Appearance.px(2)
         border.color: root.accent
         anchors.verticalCenter: parent.verticalCenter
         x: Math.max(0, Math.min(track.width - width, root.value * track.width - width / 2))

@@ -38,8 +38,8 @@ TrayItem {
         }
 
         BarButton {
-            implicitWidth: 26
-            implicitHeight: 26
+            implicitWidth: Appearance.px(26)
+            implicitHeight: Appearance.px(26)
             radius: Appearance.radius.full
             onClicked: ClipboardService.wipe()
 
@@ -73,8 +73,8 @@ TrayItem {
                 }
 
                 BarButton {
-                    implicitWidth: 24
-                    implicitHeight: 24
+                    implicitWidth: Appearance.px(24)
+                    implicitHeight: Appearance.px(24)
                     radius: Appearance.radius.full
                     visible: entryRow.hovered
                     onClicked: ClipboardService.remove(entryRow.modelData)

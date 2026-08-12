@@ -101,30 +101,6 @@ Item {
     }
 
     IpcHandler {
-        target: "font"
-
-        function up(): void {
-            Appearance.changeFontScale(Appearance.fontScaleStep);
-        }
-
-        function down(): void {
-            Appearance.changeFontScale(-Appearance.fontScaleStep);
-        }
-
-        function reset(): void {
-            Appearance.resetFontScale();
-        }
-
-        function scale(percent: int): void {
-            Appearance.setFontScale(percent / 100);
-        }
-
-        function status(): string {
-            return `${Appearance.fontScalePercent}%`;
-        }
-    }
-
-    IpcHandler {
         target: "theme"
 
         function toggle(): void {
@@ -144,7 +120,7 @@ Item {
         }
 
         function status(): string {
-            return `${Theme.flavor} · ${Theme.accentName} · шрифт ${Appearance.fontScalePercent}%`;
+            return `${Theme.flavor} · ${Theme.accentName}`;
         }
     }
 }

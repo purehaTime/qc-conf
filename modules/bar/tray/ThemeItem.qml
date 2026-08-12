@@ -44,7 +44,7 @@ TrayItem {
                 readonly property bool selected: Theme.flavor === modelData
 
                 Layout.fillWidth: true
-                implicitHeight: 46
+                implicitHeight: Appearance.px(46)
                 radius: Appearance.radius.normal
                 baseColor: flavorPalette.base
                 activeColor: flavorPalette.base
@@ -57,7 +57,7 @@ TrayItem {
                     spacing: Appearance.spacing.normal
 
                     Row {
-                        spacing: 3
+                        spacing: Appearance.px(3)
 
                         Repeater {
                             model: ["mauve", "blue", "green", "peach"]
@@ -65,9 +65,9 @@ TrayItem {
                             Rectangle {
                                 required property var modelData
 
-                                width: 8
-                                height: 8
-                                radius: 4
+                                width: Appearance.px(8)
+                                height: Appearance.px(8)
+                                radius: width / 2
                                 color: flavorPalette[modelData]
                             }
                         }
@@ -103,11 +103,11 @@ TrayItem {
 
                 readonly property bool selected: Theme.accentName === modelData
 
-                width: 26
-                height: 26
-                radius: 13
+                width: Appearance.px(26)
+                height: Appearance.px(26)
+                radius: width / 2
                 color: Theme.p[modelData]
-                border.width: selected ? 3 : 0
+                border.width: selected ? Appearance.px(3) : 0
                 border.color: Theme.text
                 scale: mouse.containsMouse ? 1.12 : 1
 
@@ -126,84 +126,6 @@ TrayItem {
                     onClicked: Theme.setAccent(modelData)
                 }
             }
-        }
-    }
-
-    // ─── Размер шрифта ──────────────────────────────────────────────────────
-    RowLayout {
-        Layout.fillWidth: true
-        spacing: Appearance.spacing.small
-
-        SectionLabel {
-            text: "Размер шрифта"
-            icon: "format_size"
-            accent: Theme.accent
-        }
-
-        BarButton {
-            implicitWidth: 24
-            implicitHeight: 24
-            radius: Appearance.radius.full
-            visible: Appearance.fontScalePercent !== 100
-            onClicked: Appearance.resetFontScale()
-
-            MaterialIcon {
-                anchors.centerIn: parent
-                text: "restart_alt"
-                color: Theme.subtext0
-                font.pixelSize: Appearance.font.icon.small
-            }
-        }
-    }
-
-    RowLayout {
-        Layout.fillWidth: true
-        spacing: Appearance.spacing.normal
-
-        BarButton {
-            implicitWidth: 28
-            implicitHeight: 28
-            radius: Appearance.radius.full
-            enabled: Appearance.fontScale > Appearance.minFontScale
-            onClicked: Appearance.changeFontScale(-Appearance.fontScaleStep)
-
-            MaterialIcon {
-                anchors.centerIn: parent
-                text: "text_decrease"
-                color: Theme.subtext1
-                font.pixelSize: Appearance.font.icon.small
-            }
-        }
-
-        PastelSlider {
-            Layout.fillWidth: true
-            accent: Theme.accent
-            value: Appearance.fontScaleNormalized
-            onMoved: v => Appearance.setFontScale(Appearance.minFontScale + v * (Appearance.maxFontScale - Appearance.minFontScale))
-        }
-
-        BarButton {
-            implicitWidth: 28
-            implicitHeight: 28
-            radius: Appearance.radius.full
-            enabled: Appearance.fontScale < Appearance.maxFontScale
-            onClicked: Appearance.changeFontScale(Appearance.fontScaleStep)
-
-            MaterialIcon {
-                anchors.centerIn: parent
-                text: "text_increase"
-                color: Theme.subtext1
-                font.pixelSize: Appearance.font.icon.normal
-            }
-        }
-
-        StyledText {
-            Layout.preferredWidth: 42
-            horizontalAlignment: Text.AlignRight
-            text: `${Appearance.fontScalePercent}%`
-            color: Theme.subtext0
-            mono: true
-            font.pixelSize: Appearance.font.size.small
         }
     }
 

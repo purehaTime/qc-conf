@@ -36,8 +36,8 @@ TrayItem {
         spacing: Appearance.spacing.normal
 
         BarButton {
-            implicitWidth: 30
-            implicitHeight: 30
+            implicitWidth: Appearance.px(30)
+            implicitHeight: Appearance.px(30)
             radius: Appearance.radius.full
             onClicked: Audio.toggleMute()
 
@@ -58,7 +58,7 @@ TrayItem {
         }
 
         StyledText {
-            Layout.preferredWidth: 34
+            Layout.preferredWidth: Appearance.px(34)
             horizontalAlignment: Text.AlignRight
             text: `${Audio.volumePercent}%`
             color: Theme.subtext0
@@ -81,8 +81,8 @@ TrayItem {
         spacing: Appearance.spacing.normal
 
         BarButton {
-            implicitWidth: 30
-            implicitHeight: 30
+            implicitWidth: Appearance.px(30)
+            implicitHeight: Appearance.px(30)
             radius: Appearance.radius.full
             onClicked: Audio.toggleInputMute()
 
@@ -103,7 +103,7 @@ TrayItem {
         }
 
         StyledText {
-            Layout.preferredWidth: 34
+            Layout.preferredWidth: Appearance.px(34)
             horizontalAlignment: Text.AlignRight
             text: `${Audio.inputVolumePercent}%`
             color: Theme.subtext0

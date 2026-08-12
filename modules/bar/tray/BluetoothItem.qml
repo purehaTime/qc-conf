@@ -120,7 +120,7 @@ TrayItem {
 
     BarButton {
         Layout.fillWidth: true
-        implicitHeight: 30
+        implicitHeight: Appearance.px(30)
         radius: Appearance.radius.normal
         baseColor: Theme.alpha(Theme.surface0, 0.5)
         onClicked: BluetoothService.openSettings()

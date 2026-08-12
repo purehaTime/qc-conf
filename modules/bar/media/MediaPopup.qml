@@ -22,8 +22,8 @@ DockPopup {
         spacing: Appearance.spacing.medium
 
         ClippingRectangle {
-            Layout.preferredWidth: 64
-            Layout.preferredHeight: 64
+            Layout.preferredWidth: Appearance.px(64)
+            Layout.preferredHeight: Appearance.px(64)
             radius: Appearance.radius.normal
             color: Theme.alpha(Theme.pink, 0.16)
 
@@ -128,8 +128,8 @@ DockPopup {
         }
 
         BarButton {
-            implicitWidth: 34
-            implicitHeight: 34
+            implicitWidth: Appearance.px(34)
+            implicitHeight: Appearance.px(34)
             radius: Appearance.radius.full
             enabled: root.player?.canGoPrevious ?? false
             onClicked: MediaService.previous()
@@ -144,8 +144,8 @@ DockPopup {
         }
 
         BarButton {
-            implicitWidth: 42
-            implicitHeight: 42
+            implicitWidth: Appearance.px(42)
+            implicitHeight: Appearance.px(42)
             radius: Appearance.radius.full
             baseColor: Theme.alpha(Theme.pink, 0.18)
             enabled: root.player?.canTogglePlaying ?? false
@@ -161,8 +161,8 @@ DockPopup {
         }
 
         BarButton {
-            implicitWidth: 34
-            implicitHeight: 34
+            implicitWidth: Appearance.px(34)
+            implicitHeight: Appearance.px(34)
             radius: Appearance.radius.full
             enabled: root.player?.canGoNext ?? false
             onClicked: MediaService.next()

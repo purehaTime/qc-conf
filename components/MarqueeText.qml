@@ -102,12 +102,12 @@ Item {
                 }
 
                 GradientStop {
-                    position: Math.min(0.15, 12 / Math.max(1, root.width))
+                    position: Math.min(0.15, Appearance.px(12) / Math.max(1, root.width))
                     color: "white"
                 }
 
                 GradientStop {
-                    position: 1 - Math.min(0.15, 12 / Math.max(1, root.width))
+                    position: 1 - Math.min(0.15, Appearance.px(12) / Math.max(1, root.width))
                     color: "white"
                 }
 

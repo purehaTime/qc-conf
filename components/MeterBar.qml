@@ -51,8 +51,8 @@ ColumnLayout {
 
     Rectangle {
         Layout.fillWidth: true
-        height: 8
-        radius: 4
+        height: Appearance.px(8)
+        radius: height / 2
         color: Theme.trackBg
 
         Rectangle {

@@ -32,8 +32,8 @@ TrayItem {
         }
 
         BarButton {
-            implicitWidth: 26
-            implicitHeight: 26
+            implicitWidth: Appearance.px(26)
+            implicitHeight: Appearance.px(26)
             radius: Appearance.radius.full
             enabled: !Brightness.probing
             onClicked: Brightness.refresh()

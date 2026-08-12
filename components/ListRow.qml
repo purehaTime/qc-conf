@@ -25,7 +25,7 @@ Rectangle {
     default property alias trailing: trailingItem.data
 
     Layout.fillWidth: true
-    implicitHeight: Math.max(36, row.implicitHeight + Appearance.padding.small * 2)
+    implicitHeight: Math.max(Appearance.px(36), row.implicitHeight + Appearance.padding.small * 2)
     radius: Appearance.radius.normal
     color: mouse.pressed ? Theme.pressBg : (mouse.containsMouse ? Theme.hoverBg : (active ? Theme.alpha(accent, 0.14) : "transparent"))
 
