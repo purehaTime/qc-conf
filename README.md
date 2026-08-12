@@ -11,13 +11,13 @@
 ## Запуск
 
 ```bash
-qs -p ~/Code/niri-conf/quickshell_2
+qs -p ~/qc-conf
 ```
 
 Чтобы конфиг подхватывался как `qs` без флагов, положите симлинк:
 
 ```bash
-ln -s ~/Code/niri-conf/quickshell_2 ~/.config/quickshell/niri
+ln -s ~/qc-conf ~/.config/quickshell/niri
 ```
 
 и запускайте `qs -c niri`.
@@ -84,16 +84,16 @@ readonly property int mediaTextMaxWidth: 400   // px, дальше — прок�
 Добавьте в `config.kdl`:
 
 ```kdl
-spawn-at-startup "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2"
+spawn-at-startup "qs" "-p" "/home/user/qc-conf"
 
 binds {
-    XF86AudioRaiseVolume  allow-when-locked=true { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "audio" "up"; }
-    XF86AudioLowerVolume  allow-when-locked=true { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "audio" "down"; }
-    XF86AudioMute         allow-when-locked=true { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "audio" "mute"; }
-    XF86MonBrightnessUp   { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "brightness" "up"; }
-    XF86MonBrightnessDown { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "brightness" "down"; }
-    XF86AudioPlay         { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "media" "playPause"; }
-    Mod+V                 { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "popup" "toggle" "clipboard"; }
+    XF86AudioRaiseVolume  allow-when-locked=true { spawn "qs" "-p" "/home/user/qc-conf" "ipc" "call" "audio" "up"; }
+    XF86AudioLowerVolume  allow-when-locked=true { spawn "qs" "-p" "/home/user/qc-conf" "ipc" "call" "audio" "down"; }
+    XF86AudioMute         allow-when-locked=true { spawn "qs" "-p" "/home/user/qc-conf" "ipc" "call" "audio" "mute"; }
+    XF86MonBrightnessUp   { spawn "qs" "-p" "/home/user/qc-conf" "ipc" "call" "brightness" "up"; }
+    XF86MonBrightnessDown { spawn "qs" "-p" "/home/user/qc-conf" "ipc" "call" "brightness" "down"; }
+    XF86AudioPlay         { spawn "qs" "-p" "/home/user/qc-conf" "ipc" "call" "media" "playPause"; }
+    Mod+V                 { spawn "qs" "-p" "/home/user/qc-conf" "ipc" "call" "popup" "toggle" "clipboard"; }
 }
 ```
 
@@ -102,7 +102,7 @@ binds {
 Проверить вручную:
 
 ```bash
-qs -p ~/Code/niri-conf/quickshell_2 ipc call theme cycle
+qs -p ~/qc-conf ipc call theme cycle
 ```
 
 ## Зависимости
