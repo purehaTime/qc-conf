@@ -1,2 +1,140 @@
-# qc-conf
-quickshell configuratin witrh catppuchin theme
+# Quickshell для niri — часть 1: панель управления
+
+Модульная конфигурация Quickshell 0.3 в пастельной палитре Catppuccin.
+
+```
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ ♪ плеер  ‹назад ► вперёд 🔇›        CPU  RAM  GPU        [ трей ]  00:06 Ср 12 авг │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+## Запуск
+
+```bash
+qs -p ~/Code/niri-conf/quickshell_2
+```
+
+Чтобы конфиг подхватывался как `qs` без флагов, положите симлинк:
+
+```bash
+ln -s ~/Code/niri-conf/quickshell_2 ~/.config/quickshell/niri
+```
+
+и запускайте `qs -c niri`.
+
+## Структура
+
+| Каталог | Что внутри |
+|---|---|
+| `shell.qml` | точка входа: панель на каждом мониторе + IPC |
+| `config/` | `Theme` (цвета), `Appearance` (размеры/шрифты/анимации), `Settings` (поведение) |
+| `services/` | синглтоны-источники данных: система, звук, яркость, сеть, BT, раскладка, буфер, плееры |
+| `components/` | переиспользуемые элементы: кнопка, подсказка, док-окно, слайдер, переключатель, строка списка |
+| `modules/bar/` | сама панель, разбитая по зонам: `media/`, `stats/`, `clock/`, `tray/` |
+| `modules/IpcActions.qml` | внешние команды для биндов niri |
+
+Каждый элемент трея — отдельный файл в `modules/bar/tray/`, содержимое его док-окна
+описано прямо в нём (дети `TrayItem` попадают в попап).
+
+## Что уже работает
+
+**Слева — плеер (MPRIS).** Обложка, название, кнопки назад / пауза / вперёд / заглушить.
+Колесо мыши на названии — переключение треков, ПКМ — пауза. Клик открывает док-окно
+с перемоткой, громкостью плеера и выбором проигрывателя.
+
+Длинное название превращается в бегущую строку с мягкими краями
+(`components/MarqueeText.qml`). **Ширина названия задаётся одной константой:**
+
+```qml
+// config/Settings.qml
+readonly property int mediaTextMaxWidth: 400   // px, дальше — прокрутка
+```
+
+Рядом — скорость прокрутки, пауза перед стартом и разрыв между повторами
+(`marqueeSpeed`, `marqueePause`, `marqueeGap`). Quickshell перечитывает конфиг при
+сохранении файла, так что ширину можно подбирать вживую, не перезапуская оболочку.
+
+**Центр — метрики.** CPU (цвет меняется по нагрузке), занятая память, загрузка GPU
+(nvidia-smi, при отсутствии — amdgpu из sysfs). При наведении — краткая сводка,
+по клику — подробности: температуры, swap, видеопамять и топ процессов.
+
+**Справа — системный трей** (слегка затемнённый блок):
+
+| Кнопка | Наведение | Клик | Колесо / СКМ |
+|---|---|---|---|
+| Раскладка | текущая раскладка | список раскладок | переключение |
+| Буфер обмена | число записей | история cliphist, клик — скопировать, ✕ — удалить | — |
+| Яркость | текущий % | слайдеры по мониторам | ±5 % |
+| Звук | громкость и устройство | вывод, микрофон, выбор устройств | ±2 %, СКМ — mute |
+| Bluetooth | что подключено | питание, поиск, устройства, заряд | СКМ — вкл/выкл |
+| Сеть | SSID и сигнал | Wi-Fi список, проводное, настройки | СКМ — Wi-Fi вкл/выкл |
+| Тема | текущий вариант | 4 варианта Catppuccin + акцент + **размер шрифта** + светлая/тёмная | смена варианта |
+
+**Размер шрифта** живёт в том же док-окне темы: ползунок и кнопки A− / A+ (шаг 5 %,
+диапазон 75–160 %), кнопка ↺ сбрасывает на 100 %. За кеглем тянутся размеры иконок,
+высота панели и ширина попапов; выбранное значение сохраняется в
+`~/.local/state/quickshell/by-shell/<id>/appearance.json`.
+
+**Часы** — `HH:mm` + дата `Ср 12 авг`, по клику календарь на месяц.
+
+Выбор темы и акцента сохраняется в `~/.local/state/quickshell/by-shell/<id>/theme.json`.
+
+## Интеграция с niri
+
+Добавьте в `config.kdl`:
+
+```kdl
+spawn-at-startup "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2"
+
+binds {
+    XF86AudioRaiseVolume  allow-when-locked=true { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "audio" "up"; }
+    XF86AudioLowerVolume  allow-when-locked=true { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "audio" "down"; }
+    XF86AudioMute         allow-when-locked=true { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "audio" "mute"; }
+    XF86MonBrightnessUp   { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "brightness" "up"; }
+    XF86MonBrightnessDown { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "brightness" "down"; }
+    XF86AudioPlay         { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "media" "playPause"; }
+    Mod+V                 { spawn "qs" "-p" "/home/catnip/Code/niri-conf/quickshell_2" "ipc" "call" "popup" "toggle" "clipboard"; }
+}
+```
+
+Доступные цели IPC: `popup` (open/close/toggle/list), `audio`, `brightness`, `media`,
+`theme`, `font` (up/down/reset/scale/status).
+Проверить вручную:
+
+```bash
+qs -p ~/Code/niri-conf/quickshell_2 ipc call theme cycle
+```
+
+## Зависимости
+
+Обязательно: `quickshell`, шрифты `ttf-material-symbols-variable`, `adwaita-fonts`,
+`ttf-jetbrains-mono-nerd`.
+По желанию: `cliphist` + `wl-clipboard` (буфер), `ddcutil` (яркость внешних мониторов),
+`brightnessctl` (подсветка ноутбука), `pavucontrol`, `nm-connection-editor`, `blueman`.
+
+Яркость по DDC/CI требует состоять в группе `i2c` и загруженного модуля `i2c-dev`.
+
+## Настройка
+
+Быстрые правки — в `config/Settings.qml`: формат часов, интервалы опроса, шаги громкости
+и яркости, внешние программы, список мониторов для панели.
+Цвета — `config/Theme.qml`, размеры и анимации — `config/Appearance.qml`.
+
+## Заметки по реализации
+
+Ось `FILL` переменного шрифта Material Symbols в Qt рендерится с артефактами, поэтому
+«залитость» иконок передаётся насыщенностью начертания (`wght`) — см. `components/MaterialIcon.qml`.
+
+Если у открытого док-окна меняется размер (сменили кегль, догрузился список), под KWin
+его поверхность перестаёт получать новые кадры и содержимое застывает. Обход — на пару
+кадров прячем окно, поверхность пересоздаётся (`components/DockPopup.qml`). Под niri
+проблемы может не быть: тогда выключите `Settings.popupRemapOnResize`, и попап перестанет
+моргать при изменении размера.
+
+Док-окно закрывается через 0.7 с после того, как курсор ушёл и с кнопки, и с самого окна;
+повторный клик по кнопке тоже закрывает. Одновременно открыт только один попап.
+
+## Дальше
+
+Не сделано и ждёт следующих заходов: рабочие столы niri, системный трей (StatusNotifier),
+уведомления, поиск в истории буфера, ввод пароля Wi-Fi, батарея/питание, лаунчер, обои.
